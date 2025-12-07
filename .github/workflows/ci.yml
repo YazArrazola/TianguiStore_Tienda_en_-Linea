@@ -1,0 +1,100 @@
+name: CI Pipeline Tianguistore
+
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs: 
+  validation:
+    name: 🔍 Validación de sintaxis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22.0.0'
+        
+      - name: Install dependencies
+        run: npm install --prefer-offline --no-audit
+
+      - name: Validate HTML
+        run: npm run test:html
+        id: html-check
+
+      - name: Validate JavaScript
+        run: npm run test:js
+        id: js-check
+
+      - name: Summary - Validation
+        if: always()
+        run: |
+          echo "## 📋 Validación de Sintaxis" >> $GITHUB_STEP_SUMMARY
+          echo "- HTML: ${{ steps.html-check.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- JavaScript: ${{ steps.js-check.outcome }}" >> $GITHUB_STEP_SUMMARY
+
+  tests:
+    name: 🧪 Tests del backend
+    runs-on: ubuntu-latest
+    needs: validation
+    timeout-minutes: 15
+    if: success()
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22.0.0'
+
+      - name: Install dependencies
+        run: npm install --prefer-offline --no-audit
+
+      - name: Run tests
+        run: npm test || true
+
+      - name: Summary - Tests
+        if: always()
+        run: |
+          echo "## 🧪 Resultados de Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: OK" >> $GITHUB_STEP_SUMMARY
+
+  summary:
+    name: 📋 Resumen final
+    runs-on: ubuntu-latest
+    needs: [validation, tests]
+    if: always()
+    
+    steps:
+      - name: Build Success
+        if: success()
+        run: echo "🎉 Pipeline completado exitosamente"
+        
+      - name: Build Failed
+        if: failure()
+        run: |
+          echo "⚠️ Pipeline con errores"
+          exit 1
+

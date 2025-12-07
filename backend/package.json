@@ -16,8 +16,8 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production node backend/server.js",
-    "dev": "nodemon backend/server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "build:css": "lessc public/estilo/main.less public/estilo/main.css",
     "watch:css": "nodemon --watch public/estilo/main.less --exec \"npm run build:css\"",
     "setup": "npm install && npm run install:materialize && npm run build:css",
@@ -26,7 +26,12 @@
     "update:all": "npm update",
     "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "install:progress": "node install-with-progress.js"
+    "install:progress": "node install-with-progress.js",
+    "test": "node test/run-syntax-validation.js",
+    "test:html": "node test/validate-html.js",
+    "test:js": "node test/validate-javascript.js",
+    "test:syntax": "node --test test/validate-syntax.test.js",
+    "validate": "npm run test"
   },
   "keywords": [
     "tianguistore",
@@ -69,7 +74,7 @@
     "eslint": "^9.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "less": "^4.3.0",
+    "less": "^4.4.2",
     "prettier": "^3.5.3"
   },
   "sideEffects": false
