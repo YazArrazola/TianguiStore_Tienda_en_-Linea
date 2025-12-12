@@ -185,7 +185,7 @@ app.use((err, req, res, next) => {
 const GAUGE_MESSAGES = {
   verifyingDB: `⌛ Verificando conexión a la base de datos...`,
   dbSuccess: `✅ Conexión exitosa a la base de datos`,
-  dbErro: `❌ Error al conectar a la base de datos`,
+  dbError: `❌ Error al conectar a la base de datos`,
   startingServer: `⌛ Iniciando servidor...`,
   serverActive: `🟢 Servidor en funcionamiento`
 };
