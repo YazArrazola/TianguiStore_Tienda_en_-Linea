@@ -185,7 +185,7 @@ app.use((err, req, res, next) => {
 const GAUGE_MESSAGES = {
   verifyingDB: `⌛ Verificando conexión a la base de datos...`,
   dbSuccess: `✅ Conexión exitosa a la base de datos`,
-  dbError: `❌ Error al conectar a la base de datos`,
+  dbErro: `❌ Error al conectar a la base de datos`,
   startingServer: `⌛ Iniciando servidor...`,
   serverActive: `🟢 Servidor en funcionamiento`
 };
@@ -231,7 +231,7 @@ function logStartup() {
     { label: "Servidor en", value: url }
   ];
   config.forEach(({ label, value }) => console.log(chalk.cyan(`  ${label.padEnd(18)}: ${value}`)));
-  console.log(chalk.green("========================================\n"));
+  console.log(chalk.green("====================================\n"));
 }
 
 function getCurrentDateTime() {
