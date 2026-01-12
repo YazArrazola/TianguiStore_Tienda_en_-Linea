@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Práctica 01 : Eventos</title>
+    </head>
+<body> 
+    <span size="10" color="blue"><marquee behavior="Times New Roman" direction="right">Práctica 01</marquee></span>
+    <p> cantidad de clicks: <span id="contador">0</span></p>
+    <button id="btn" onclick="incrementarContador()">sumar</button>
+    <script>
+        let contadoe = 0;
+        function incrementarContador(){
+            contadoe++;
+            document.getElementById("contador").innerText = contadoe;
+        }
+    </script>
+</body>
+</html>
